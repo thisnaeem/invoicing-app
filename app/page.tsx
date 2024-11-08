@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
 import { ThemeToggle } from "@/components/theme-toggle"
 import { 
   Plus, 
@@ -142,28 +141,23 @@ export default function InvoicePage() {
   const generatePDF = (invoice: Invoice) => {
     const doc = new jsPDF()
     
-    // Header
     doc.setFontSize(20)
     doc.text('INVOICE', 105, 20, { align: 'center' })
     
-    // Company Info
     doc.setFontSize(10)
     doc.text(settings.companyName, 20, 40)
     doc.text(settings.companyAddress, 20, 45)
     doc.text(settings.companyEmail, 20, 50)
     doc.text(settings.companyPhone, 20, 55)
     
-    // Invoice Details
     doc.text(`Invoice #: ${invoice.invoiceNumber}`, 140, 40)
     doc.text(`Date: ${invoice.date}`, 140, 45)
     doc.text(`Due Date: ${invoice.dueDate}`, 140, 50)
     
-    // Customer Info
     doc.text('Bill To:', 20, 70)
     doc.setFontSize(12)
     doc.text(invoice.customerName, 20, 75)
     
-    // Items Table
     const tableData = invoice.items.map(item => [
       item.description,
       item.quantity.toString(),
@@ -186,7 +180,6 @@ export default function InvoicePage() {
       ]
     })
     
-    // Notes
     if (invoice.notes) {
       const finalY = (doc as any).lastAutoTable.finalY + 20
       doc.text('Notes:', 20, finalY)
@@ -260,7 +253,24 @@ export default function InvoicePage() {
       <nav className="border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <h1 className="text-2xl font-bold">Invoice Manager</h1>
+            <div className="flex items-center gap-6">
+              <h1 className="text-2xl font-bold">Invoice Manager</h1>
+              <a 
+                href="https://www.producthunt.com/posts/quickinvoice?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-quickinvoice" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:block transition-transform hover:scale-105"
+              >
+                <img 
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=590273&theme=light" 
+                  alt="QuickInvoice - Create unlimited free invoices | Product Hunt" 
+                  width="250" 
+                  height="54" 
+                  style={{ width: '250px', height: '54px' }}
+                  className="hover:opacity-90 transition-opacity"
+                />
+              </a>
+            </div>
             <div className="flex items-center gap-4">
               <TooltipProvider>
                 <Tooltip>
@@ -387,7 +397,7 @@ export default function InvoicePage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date">Date</Label>
                   <Input
                     id="date"
                     type="date"
@@ -408,7 +418,7 @@ export default function InvoicePage() {
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                <Label className="text-lg font-semibold">Items</Label>
+                  <Label className="text-lg font-semibold">Items</Label>
                   <Button onClick={addInvoiceItem} variant="outline">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Item
